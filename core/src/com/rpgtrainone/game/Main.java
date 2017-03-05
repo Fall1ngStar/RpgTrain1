@@ -76,13 +76,19 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void updatePos(){
-	    /*if(Gdx.input.isTouched()){
-	        x = (x + Gdx.input.getX())/2;
-            y = (y + (height - Gdx.input.getY()))/2;
-	    }*/
-	    Vector2 movement = joystick.getInput();
-	    x += movement.x*Gdx.graphics.getDeltaTime()*speed;
-	    y += movement.y*Gdx.graphics.getDeltaTime()*speed;
+	    switch(Gdx.app.getType()){
+            case Desktop:
+                if(Gdx.input.isTouched()){
+                    x = (x + Gdx.input.getX())/2;
+                    y = (y + (height - Gdx.input.getY()))/2;
+                }
+                break;
+            case Android:
+                Vector2 movement = joystick.getInput();
+                x += movement.x * Gdx.graphics.getDeltaTime() * speed;
+                y += movement.y * Gdx.graphics.getDeltaTime() * speed;
+                break;
+        }
     }
 
 
