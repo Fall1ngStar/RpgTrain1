@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -19,6 +20,8 @@ public class Main extends ApplicationAdapter {
 	int height;
 	int x;
 	int y;
+	float speed;
+	JoystickInput joystick;
 
 
 	@Override
@@ -33,6 +36,8 @@ public class Main extends ApplicationAdapter {
 		sr = new ShapeRenderer();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,width,height);
+		joystick = new JoystickInput(this);
+		speed = 5f;
 	}
 
 	@Override
@@ -44,23 +49,23 @@ public class Main extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
 
-		updatePos();
 		batch.begin();
 		batch.draw(img, x-img.getWidth()/2, y-img.getHeight()/2);
 		batch.end();
 
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(1,0,0,1);
-        sr.line(1180,900,1220,900);
-        sr.line(1200,880,1200,920);
-        sr.end();
+		sr.begin(ShapeRenderer.ShapeType.Line);
+		sr.setColor(1,0,0,1);
+		sr.line(1180,900,1220,900);
+		sr.line(1200,880,1200,920);
+		sr.end();
 
-        batch.begin();
-        font.getData().setScale(2);
-        font.setColor(1,1,1,1);
-        String inputPos = "x: " + Gdx.input.getX() + " y: " + Gdx.input.getY();
-        font.draw(batch, inputPos,width/2,height/2);
-        batch.end();
+		batch.begin();
+		font.getData().setScale(2);
+		font.setColor(1,1,1,1);
+		String inputPos = "x: " + Gdx.input.getX() + " y: " + Gdx.input.getY();
+		font.draw(batch, inputPos,width/2,height/2);
+		batch.end();
+		updatePos();
 	}
 	
 	@Override
@@ -71,10 +76,13 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void updatePos(){
-	    if(Gdx.input.isTouched()){
+	    /*if(Gdx.input.isTouched()){
 	        x = (x + Gdx.input.getX())/2;
             y = (y + (height - Gdx.input.getY()))/2;
-	    }
+	    }*/
+	    Vector2 movement = joystick.getInput();
+	    x += movement.x*Gdx.graphics.getDeltaTime()*speed;
+	    y += movement.y*Gdx.graphics.getDeltaTime()*speed;
     }
 
 
