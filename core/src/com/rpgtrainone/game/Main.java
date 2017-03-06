@@ -42,27 +42,21 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
+		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-        sr.setProjectionMatrix(camera.combined);
+		sr.setProjectionMatrix(camera.combined);
 
 		batch.begin();
 		batch.draw(img, x-img.getWidth()/2, y-img.getHeight()/2);
 		batch.end();
 
-		sr.begin(ShapeRenderer.ShapeType.Line);
-		sr.setColor(1,0,0,1);
-		sr.line(1180,900,1220,900);
-		sr.line(1200,880,1200,920);
-		sr.end();
-
 		batch.begin();
 		font.getData().setScale(2);
 		font.setColor(1,1,1,1);
-		String inputPos = "x: " + Gdx.input.getX() + " y: " + Gdx.input.getY();
+		String inputPos = "x: " + x + " y: " + y;
 		font.draw(batch, inputPos,width/2,height/2);
 		batch.end();
 		updatePos();
@@ -79,8 +73,10 @@ public class Main extends ApplicationAdapter {
 	    switch(Gdx.app.getType()){
             case Desktop:
                 if(Gdx.input.isTouched()){
-                    x = (x + Gdx.input.getX())/2;
-                    y = (y + (height - Gdx.input.getY()))/2;
+                    int nextX = (x + Gdx.input.getX())/2;
+                    int nextY = (y + (height - Gdx.input.getY()))/2;
+					x = (x + nextX)/2;
+					y = (y + nextY)/2;
                 }
                 break;
             case Android:
